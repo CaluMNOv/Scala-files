@@ -194,7 +194,7 @@ case class NashCalculator(val size: Int, private var tol: Double, private var fu
           /*
            * Backtracking, um einen besseren Punkt zu finden
            */
-          while (functions(i)(currentPoints) >= functions(i)(points.top) && beta(i) > 0.0000000000000001) {
+          while (functions(i)(currentPoints) >= functions(i)(points.top) - mu * alpha(i) * beta(i) * discInt(i) * discInt(i) && beta(i) > 0.0000000000000001) {
             /*
              * Beta verkleinern, bis besseres Ergebnis gefunden
              */
@@ -207,7 +207,7 @@ case class NashCalculator(val size: Int, private var tol: Double, private var fu
             /*
              * Falls außerhalb der zulässigen Menge gelandet, wird der Punkt nicht aktualisiert
              */
-            currentPoints(i) = points.top(i)
+            currentPoints(i) = proj(i)(currentPoints(i))
           }
           smallerAlpha(i)// Alpha kleiner, da Schritt nicht erfolgreich
         }
